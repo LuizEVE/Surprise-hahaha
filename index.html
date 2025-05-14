@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galeria de Elogios - 18 Razões</title>
+    <style>
+        :root {
+            --primary-color: #6a5acd;
+            --secondary-color: #ff69b4;
+            --accent-color: #4169e1;
+            --light-bg: #fff0f5;
+            --dark-text: #2e2e3a;
+            --light-text: #f8f8ff;
+            --gradient: linear-gradient(135deg, #6a5acd 0%, #ff69b4 100%);
+            --shadow: 0 4px 15px rgba(106, 90, 205, 0.2);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--light-bg);
+            color: var(--dark-text);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem 1rem;
+            background-image: radial-gradient(circle at 10% 20%, rgba(255, 200, 240, 0.2) 0%, rgba(200, 220, 255, 0.3) 90%);
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 2rem;
+            width: 100%;
+            max-width: 900px;
+            padding: 1rem;
+            background: white;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(5px);
+        }
+        
+        h1 {
+            font-weight: 700;
+            font-size: 2.2rem;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 0.3rem;
+        }
+        
+        .subtitle {
+            font-weight: 500;
+            color: var(--primary-color);
+            font-size: 1.1rem;
+        }
+        
+        .main-container {
+            width: 100%;
+            max-width: 900px;
+            display: flex;
+            flex-direction: column;
+            background: white;
+            padding: 1.5rem;
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(5px);
+        }
+        
+        .gallery-container {
+            width: 100%;
+            height: 60vh;
+            min-height: 400px;
+            position: relative;
+            margin-bottom: 1.5rem;
+            overflow: hidden;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            background: linear-gradient(45deg, #f0f8ff, #fff0f5);
+            border: 2px solid rgba(255, 255, 255, 0.5);
+        }
+        
+        .photo {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            transition: opacity 0.4s ease-in-out;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.9);
+        }
+        
+        .photo.active {
+            opacity: 1;
+        }
+        
+        .compliment {
+            position: absolute;
+            bottom: 30px;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-shadow: 1px 1px 3px rgba(255, 255, 255, 0.8);
+            padding: 0.5rem;
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(5px);
+            border-radius: 0 0 12px 12px;
+        }
+        
+        .navigation {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-bottom: 1.2rem;
+        }
+        
+        .nav-btn {
+            background: var(--gradient);
+            color: var(--light-text);
+            border: none;
+            padding: 0.8rem 1.8rem;
+            font-size: 1rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--shadow);
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        .nav-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(106, 90, 205, 0.3);
+        }
+        
+        .nav-btn:disabled {
+            background: #d3d3e0;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+            color: #a0a0a0;
+        }
+        
+        .counter {
+            font-size: 1.1rem;
+            color: var(--primary-color);
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 0.5rem;
+            background: rgba(255, 255, 255, 0.7);
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            display: inline-block;
+            margin: 0 auto 1rem;
+        }
+        
+        .progress-container {
+            width: 100%;
+            height: 8px;
+            background-color: #e6e6fa;
+            border-radius: 4px;
+            margin-bottom: 1.5rem;
+            overflow: hidden;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background: var(--gradient);
+            width: 0%;
+            transition: width 0.4s ease;
+        }
+        
+        .thumbnail-container {
+            display: flex;
+            gap: 10px;
+            padding: 15px 5px;
+            overflow-x: auto;
+            scrollbar-width: thin;
+            margin-top: 10px;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 12px;
+        }
+        
+        .thumbnail {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 8px;
+            cursor: pointer;
+            border: 3px solid transparent;
+            transition: all 0.2s ease;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+            flex-shrink: 0;
+        }
+        
+        .thumbnail:hover {
+            transform: scale(1.1);
+            box-shadow: 0 5px 15px rgba(106, 90, 205, 0.3);
+        }
+        
+        .thumbnail.active {
+            border-color: var(--secondary-color);
+            transform: scale(1.08);
+            box-shadow: 0 0 0 3px white, 0 0 0 6px var(--secondary-color);
+        }
+        
+        /* Modal para foto ampliada */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(106, 90, 205, 0.9);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-content {
+            max-width: 90%;
+            max-height: 90%;
+            border: 5px solid white;
+            border-radius: 8px;
+            box-shadow: 0 0 30px rgba(255, 105, 180, 0.6);
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 30px;
+            right: 40px;
+            color: white;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+            transition: transform 0.2s;
+        }
+        
+        .close-modal:hover {
+            transform: scale(1.2);
+            color: var(--secondary-color);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>18 Razões Porque Eu Te Amo</h1>
+        <p class="subtitle">Descubra em cada foto um motivo especial</p>
+    </header>
+    
+    <div class="main-container">
+        <div class="gallery-container" id="gallery-container">
+            <!-- Fotos e elogios serão inseridos aqui via JavaScript -->
+        </div>
+        
+        <div class="progress-container">
+            <div class="progress-bar" id="progress-bar"></div>
+        </div>
+        
+        <div class="counter">
+            <span id="current-photo">1</span> de <span id="total-photos">18</span>
+        </div>
+        
+        <div class="navigation">
+            <button class="nav-btn" id="prev-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16" style="filter: drop-shadow(0 1px 1px rgba(0,0,0,0.2))">
+                    <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+                </svg>
+                <span style="margin-left: 8px;">Anterior</span>
+            </button>
+            <button class="nav-btn" id="next-btn">
+                <span style="margin-right: 8px;">Próxima</span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16" style="filter: drop-shadow(0 1px 1px rgba(0,0,0,0.2))">
+                    <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
+                </svg>
+            </button>
+        </div>
+        
+        <div class="thumbnail-container" id="thumbnail-container">
+            <!-- Miniaturas serão inseridas aqui via JavaScript -->
+        </div>
+    </div>
+    
+    <!-- Modal para foto ampliada -->
+    <div class="modal" id="modal">
+        <span class="close-modal">&times;</span>
+        <img class="modal-content" id="modal-image">
+    </div>
+    
+    <script>
+        // Lista de 18 fotos (substitua pelos caminhos das suas imagens)
+        const photos = [
+            'https://images.unsplash.com/photo-1682686580391-615b8f1e4836?q=80&w=1000',
+            'https://images.unsplash.com/photo-1682695796954-bad0d0f59ff1?q=80&w=1000',
+            'https://images.unsplash.com/photo-1682686580391-615b8f1e4836?q=80&w=1000',
+            'https://images.unsplash.com/photo-1682695796954-bad0d0f59ff1?q=80&w=1000',
+            'https://images.unsplash.com/photo-1682686580391-615b8f1e4836?q=80&w=1000',
+            'https://images.unsplash.com/photo-1682695796954-bad0d0f59ff1?q=80&w=1000',
+            'https://images.unsplash.com/photo-1682686580391-615b8f1e4836?q=80&w=1000',
+            'https://images.unsplash.com/photo-1682695796954-bad0d0f59ff1?q=80&w=1000',
+            'https://images.unsplash.com/photo-1682686580391-615b8f1e4836?q=80&w=1000',
+            'https://images.unsplash.com/photo-1682695796954-bad0d0f59ff1?q=80&w=1000',
+            'https://images.unsplash.com/photo-1682686580391-615b8f1e4836?q=80&w=1000',
+            'https://images.unsplash.com/photo-1682695796954-bad0d0f59ff1?q=80&w=1000',
+            'https://images.unsplash.com/photo-1682686580391-615b8f1e4836?q=80&w=1000',
+            'https://images.unsplash.com/photo-1682695796954-bad0d0f59ff1?q=80&w=1000',
+            'https://images.unsplash.com/photo-1682686580391-615b8f1e4836?q=80&w=1000',
+            'https://images.unsplash.com/photo-1682695796954-bad0d0f59ff1?q=80&w=1000',
+            'https://images.unsplash.com/photo-1682686580391-615b8f1e4836?q=80&w=1000',
+            'https://images.unsplash.com/photo-1682695796954-bad0d0f59ff1?q=80&w=1000',
+            'https://images.unsplash.com/photo-1682695796954-bad0d0f59ff1?q=80&w=1000'
+        ];
+        
+        // Lista de 18 elogios (personalize como desejar)
+        const compliments = [
+            "Porque eu te amo...",
+            "Você ilumina meus dias",
+            "Seu sorriso é contagiante",
+            "Você me faz feliz como ninguém",
+            "Sua beleza me encanta",
+            "Seu coração é puro e bondoso",
+            "Você me inspira a ser melhor",
+            "Sua companhia é meu lugar favorito",
+            "Você me entende como ninguém",
+            "Seu abraço é meu refúgio",
+            "Você transforma o comum em especial",
+            "Seu amor me completa",
+            "Você é minha pessoa favorita",
+            "Sua risada é a melhor música",
+            "Você me faz acreditar no amor",
+            "Seus olhos revelam uma alma linda",
+            "Você é minha maior sorte",
+            "Nosso amor é minha maior alegria"
+        ];
+        
+        let currentIndex = 0;
+        const galleryContainer = document.getElementById('gallery-container');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const currentPhotoSpan = document.getElementById('current-photo');
+        const totalPhotosSpan = document.getElementById('total-photos');
+        const progressBar = document.getElementById('progress-bar');
+        const thumbnailContainer = document.getElementById('thumbnail-container');
+        const modal = document.getElementById('modal');
+        const modalImg = document.getElementById('modal-image');
+        const closeModal = document.querySelector('.close-modal');
+        
+        // Inicializa a galeria
+        function initGallery() {
+            // Adiciona as fotos principais e elogios
+            photos.forEach((photo, index) => {
+                const photoWrapper = document.createElement('div');
+                photoWrapper.className = 'photo-wrapper';
+                photoWrapper.style.position = 'relative';
+                photoWrapper.style.height = '100%';
+                
+                const img = document.createElement('img');
+                img.src = photo;
+                img.alt = `Foto ${index + 1}`;
+                img.className = 'photo';
+                img.dataset.index = index;
+                
+                const compliment = document.createElement('div');
+                compliment.className = 'compliment';
+                compliment.textContent = compliments[index];
+                
+                // Permite clicar na foto para ampliar
+                img.addEventListener('click', () => {
+                    openModal(photo);
+                });
+                
+                if (index === 0) {
+                    img.classList.add('active');
+                    compliment.style.display = 'block';
+                } else {
+                    compliment.style.display = 'none';
+                }
+                
+                photoWrapper.appendChild(img);
+                photoWrapper.appendChild(compliment);
+                galleryContainer.appendChild(photoWrapper);
+            });
+            
+            // Adiciona as miniaturas
+            photos.forEach((photo, index) => {
+                const thumb = document.createElement('img');
+                thumb.src = photo;
+                thumb.className = 'thumbnail';
+                thumb.dataset.index = index;
+                if (index === 0) thumb.classList.add('active');
+                
+                thumb.addEventListener('click', () => {
+                    currentIndex = index;
+                    showPhoto(currentIndex);
+                    updateControls();
+                    updateThumbnails();
+                });
+                
+                thumbnailContainer.appendChild(thumb);
+            });
+            
+            totalPhotosSpan.textContent = photos.length;
+            updateProgressBar();
+        }
+        
+        // Atualiza os controles
+        function updateControls() {
+            prevBtn.disabled = currentIndex === 0;
+            nextBtn.disabled = currentIndex === photos.length - 1;
+            currentPhotoSpan.textContent = currentIndex + 1;
+            updateProgressBar();
+        }
+        
+        // Atualiza a barra de progresso
+        function updateProgressBar() {
+            const progress = ((currentIndex + 1) / photos.length) * 100;
+            progressBar.style.width = `${progress}%`;
+        }
+        
+        // Atualiza as miniaturas ativas
+        function updateThumbnails() {
+            const thumbnails = document.querySelectorAll('.thumbnail');
+            thumbnails.forEach((thumb, index) => {
+                thumb.classList.toggle('active', index === currentIndex);
+                
+                // Rolagem suave para a miniatura ativa
+                if (index === currentIndex) {
+                    thumb.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'nearest',
+                        inline: 'center'
+                    });
+                }
+            });
+        }
+        
+        // Mostra a foto atual e seu elogio
+        function showPhoto(index) {
+            const allPhotoWrappers = document.querySelectorAll('.photo-wrapper');
+            const allCompliments = document.querySelectorAll('.compliment');
+            
+            allPhotoWrappers.forEach(wrapper => {
+                wrapper.querySelector('.photo').classList.remove('active');
+            });
+            
+            allCompliments.forEach(comp => {
+                comp.style.display = 'none';
+            });
+            
+            allPhotoWrappers[index].querySelector('.photo').classList.add('active');
+            allCompliments[index].style.display = 'block';
+            
+            updateThumbnails();
+        }
+        
+        // Abre o modal com a foto ampliada
+        function openModal(imgSrc) {
+            modal.style.display = 'flex';
+            modalImg.src = imgSrc;
+            document.body.style.overflow = 'hidden';
+        }
+        
+        // Fecha o modal
+        function closeModalFunc() {
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+        
+        // Event listeners para os botões
+        prevBtn.addEventListener('click', () => {
+            if (currentIndex > 0) {
+                currentIndex--;
+                showPhoto(currentIndex);
+                updateControls();
+            }
+        });
+        
+        nextBtn.addEventListener('click', () => {
+            if (currentIndex < photos.length - 1) {
+                currentIndex++;
+                showPhoto(currentIndex);
+                updateControls();
+            }
+        });
+        
+        // Navegação por teclado
+        document.addEventListener('keydown', (e) => {
+            if (modal.style.display === 'flex') {
+                if (e.key === 'Escape') {
+                    closeModalFunc();
+                }
+                return;
+            }
+            
+            if (e.key === 'ArrowLeft' && currentIndex > 0) {
+                currentIndex--;
+                showPhoto(currentIndex);
+                updateControls();
+            } else if (e.key === 'ArrowRight' && currentIndex < photos.length - 1) {
+                currentIndex++;
+                showPhoto(currentIndex);
+                updateControls();
+            }
+        });
+        
+        // Navegação por swipe em dispositivos móveis
+        let touchStartX = 0;
+        let touchEndX = 0;
+        
+        galleryContainer.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+        }, false);
+        
+        galleryContainer.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        }, false);
+        
+        function handleSwipe() {
+            const difference = touchStartX - touchEndX;
+            
+            if (difference > 50 && currentIndex < photos.length - 1) {
+                currentIndex++;
+                showPhoto(currentIndex);
+                updateControls();
+            } else if (difference < -50 && currentIndex > 0) {
+                currentIndex--;
+                showPhoto(currentIndex);
+                updateControls();
+            }
+        }
+        
+        // Fecha o modal ao clicar no X
+        closeModal.addEventListener('click', closeModalFunc);
+        
+        // Fecha o modal ao clicar fora da imagem
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                closeModalFunc();
+            }
+        });
+        
+        // Inicializa a galeria
+        initGallery();
+        updateControls();
+    </script>
+</body>
+</html>
