@@ -89,27 +89,35 @@
             border: 2px solid rgba(255, 255, 255, 0.5);
         }
         
-        .photo {
+        .photo-container {
+            position: absolute;
             width: 100%;
             height: 100%;
-            object-fit: contain;
-            position: absolute;
             top: 0;
             left: 0;
             opacity: 0;
             transition: opacity 0.4s ease-in-out;
-            padding: 20px;
-            background-color: rgba(255, 255, 255, 0.9);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
         }
         
-        .photo.active {
+        .photo-container.active {
             opacity: 1;
+        }
+        
+        .photo {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.9);
         }
         
         .compliment {
             position: absolute;
             bottom: 30px;
-            left: 0;
             width: 100%;
             text-align: center;
             font-size: 1.8rem;
@@ -312,25 +320,25 @@
     <script>
         // Lista de 18 fotos (substitua pelos caminhos das suas imagens)
         const photos = [
-            'https://images.unsplash.com/photo-1682686580391-615b8f1e4836?q=80&w=1000',
-            'https://images.unsplash.com/photo-1682695796954-bad0d0f59ff1?q=80&w=1000',
-            'https://images.unsplash.com/photo-1682686580391-615b8f1e4836?q=80&w=1000',
-            'https://images.unsplash.com/photo-1682695796954-bad0d0f59ff1?q=80&w=1000',
-            'https://images.unsplash.com/photo-1682686580391-615b8f1e4836?q=80&w=1000',
-            'https://images.unsplash.com/photo-1682695796954-bad0d0f59ff1?q=80&w=1000',
-            'https://images.unsplash.com/photo-1682686580391-615b8f1e4836?q=80&w=1000',
-            'https://images.unsplash.com/photo-1682695796954-bad0d0f59ff1?q=80&w=1000',
-            'https://images.unsplash.com/photo-1682686580391-615b8f1e4836?q=80&w=1000',
-            'https://images.unsplash.com/photo-1682695796954-bad0d0f59ff1?q=80&w=1000',
-            'https://images.unsplash.com/photo-1682686580391-615b8f1e4836?q=80&w=1000',
-            'https://images.unsplash.com/photo-1682695796954-bad0d0f59ff1?q=80&w=1000',
-            'https://images.unsplash.com/photo-1682686580391-615b8f1e4836?q=80&w=1000',
-            'https://images.unsplash.com/photo-1682695796954-bad0d0f59ff1?q=80&w=1000',
-            'https://images.unsplash.com/photo-1682686580391-615b8f1e4836?q=80&w=1000',
-            'https://images.unsplash.com/photo-1682695796954-bad0d0f59ff1?q=80&w=1000',
-            'https://images.unsplash.com/photo-1682686580391-615b8f1e4836?q=80&w=1000',
-            'https://images.unsplash.com/photo-1682695796954-bad0d0f59ff1?q=80&w=1000',
-            'https://images.unsplash.com/photo-1682695796954-bad0d0f59ff1?q=80&w=1000'
+            'foto.jpg',
+            'foto1.jpg',
+            'foto2.jpg',
+            'foto3.jpg',
+            'foto4.jpg',
+            'foto5.jpg',
+            'foto6.jpg',
+            'foto7.jpg',
+            'foto8.jpg',
+            'foto9.jpg',
+            'foto10.jpg',
+            'foto11.jpg',
+            'foto12.jpg',
+            'foto13.jpg',
+            'foto14.jpg',
+            'foto15.jpg',
+            'foto16.jpg',
+            'foto17.jpg',
+            'foto18.jpg'
         ];
         
         // Lista de 18 elogios (personalize como desejar)
@@ -352,6 +360,7 @@
             "Você me faz acreditar no amor",
             "Seus olhos revelam uma alma linda",
             "Você é minha maior sorte",
+            "Você espalha alegria por onde passa.",
             "Nosso amor é minha maior alegria"
         ];
         
@@ -371,16 +380,14 @@
         function initGallery() {
             // Adiciona as fotos principais e elogios
             photos.forEach((photo, index) => {
-                const photoWrapper = document.createElement('div');
-                photoWrapper.className = 'photo-wrapper';
-                photoWrapper.style.position = 'relative';
-                photoWrapper.style.height = '100%';
+                const photoContainer = document.createElement('div');
+                photoContainer.className = 'photo-container';
+                if (index === 0) photoContainer.classList.add('active');
                 
                 const img = document.createElement('img');
                 img.src = photo;
                 img.alt = `Foto ${index + 1}`;
                 img.className = 'photo';
-                img.dataset.index = index;
                 
                 const compliment = document.createElement('div');
                 compliment.className = 'compliment';
@@ -391,16 +398,9 @@
                     openModal(photo);
                 });
                 
-                if (index === 0) {
-                    img.classList.add('active');
-                    compliment.style.display = 'block';
-                } else {
-                    compliment.style.display = 'none';
-                }
-                
-                photoWrapper.appendChild(img);
-                photoWrapper.appendChild(compliment);
-                galleryContainer.appendChild(photoWrapper);
+                photoContainer.appendChild(img);
+                photoContainer.appendChild(compliment);
+                galleryContainer.appendChild(photoContainer);
             });
             
             // Adiciona as miniaturas
@@ -458,20 +458,13 @@
         
         // Mostra a foto atual e seu elogio
         function showPhoto(index) {
-            const allPhotoWrappers = document.querySelectorAll('.photo-wrapper');
-            const allCompliments = document.querySelectorAll('.compliment');
+            const allPhotoContainers = document.querySelectorAll('.photo-container');
             
-            allPhotoWrappers.forEach(wrapper => {
-                wrapper.querySelector('.photo').classList.remove('active');
+            allPhotoContainers.forEach(container => {
+                container.classList.remove('active');
             });
             
-            allCompliments.forEach(comp => {
-                comp.style.display = 'none';
-            });
-            
-            allPhotoWrappers[index].querySelector('.photo').classList.add('active');
-            allCompliments[index].style.display = 'block';
-            
+            allPhotoContainers[index].classList.add('active');
             updateThumbnails();
         }
         
@@ -567,4 +560,4 @@
         updateControls();
     </script>
 </body>
-</html>
+</html>   
