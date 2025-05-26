@@ -30,15 +30,71 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            justify-content: center;
             padding: 2rem 1rem;
             background-image: radial-gradient(circle at 10% 20%, rgba(255, 200, 240, 0.2) 0%, rgba(200, 220, 255, 0.3) 90%);
+        }
+        
+        /* Tela de Início */
+        .start-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--gradient);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            transition: opacity 0.5s ease;
+        }
+        
+        .start-screen h2 {
+            color: white;
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            text-align: center;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+            padding: 0 20px;
+        }
+        
+        .start-btn {
+            background: white;
+            color: var(--primary-color);
+            border: none;
+            padding: 1rem 2rem;
+            font-size: 1.5rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            font-weight: 600;
+        }
+        
+        .start-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        /* Conteúdo principal */
+        .main-content {
+            display: none;
+            width: 100%;
+            max-width: 900px;
+            margin: 0 auto;
         }
         
         header {
             text-align: center;
             margin-bottom: 2rem;
             width: 100%;
-            max-width: 900px;
             padding: 1rem;
             background: white;
             border-radius: 12px;
@@ -65,7 +121,6 @@
         
         .main-container {
             width: 100%;
-            max-width: 900px;
             display: flex;
             flex-direction: column;
             background: white;
@@ -86,7 +141,9 @@
             border-radius: 12px;
             box-shadow: var(--shadow);
             background: linear-gradient(45deg, #f0f8ff, #fff0f5);
-            border: 2px solid rgba(255, 255, 255, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
         
         .photo-container {
@@ -98,9 +155,11 @@
             opacity: 0;
             transition: opacity 0.4s ease-in-out;
             display: flex;
-            flex-direction: column;
             justify-content: center;
             align-items: center;
+            background-color: white;
+            padding: 20px;
+            box-sizing: border-box;
         }
         
         .photo-container.active {
@@ -108,26 +167,26 @@
         }
         
         .photo {
-            width: 100%;
-            height: 100%;
+            max-width: 100%;
+            max-height: 100%;
             object-fit: contain;
-            padding: 20px;
-            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 8px;
         }
         
         .compliment {
             position: absolute;
-            bottom: 30px;
+            bottom: 0;
+            left: 0;
             width: 100%;
             text-align: center;
             font-size: 1.8rem;
             font-weight: 700;
             color: var(--primary-color);
             text-shadow: 1px 1px 3px rgba(255, 255, 255, 0.8);
-            padding: 0.5rem;
+            padding: 1rem;
             background: rgba(255, 255, 255, 0.7);
             backdrop-filter: blur(5px);
-            border-radius: 0 0 12px 12px;
+            z-index: 10;
         }
         
         .navigation {
@@ -252,6 +311,7 @@
             border: 5px solid white;
             border-radius: 8px;
             box-shadow: 0 0 30px rgba(255, 105, 180, 0.6);
+            object-fit: contain;
         }
         
         .close-modal {
@@ -270,54 +330,104 @@
             transform: scale(1.2);
             color: var(--secondary-color);
         }
+
+        /* Controle de música */
+        .music-control {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--gradient);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            z-index: 100;
+            border: 2px solid white;
+        }
+
+        .music-control i {
+            color: white;
+            font-size: 20px;
+        }
     </style>
+    <!-- Ícones do Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
-    <header>
-        <h1>18 Razões Porque Eu Te Amo</h1>
-        <p class="subtitle">Descubra em cada foto um motivo especial</p>
-    </header>
-    
-    <div class="main-container">
-        <div class="gallery-container" id="gallery-container">
-            <!-- Fotos e elogios serão inseridos aqui via JavaScript -->
-        </div>
-        
-        <div class="progress-container">
-            <div class="progress-bar" id="progress-bar"></div>
-        </div>
-        
-        <div class="counter">
-            <span id="current-photo">1</span> de <span id="total-photos">18</span>
-        </div>
-        
-        <div class="navigation">
-            <button class="nav-btn" id="prev-btn">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16" style="filter: drop-shadow(0 1px 1px rgba(0,0,0,0.2))">
-                    <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
-                </svg>
-                <span style="margin-left: 8px;">Anterior</span>
-            </button>
-            <button class="nav-btn" id="next-btn">
-                <span style="margin-right: 8px;">Próxima</span>
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16" style="filter: drop-shadow(0 1px 1px rgba(0,0,0,0.2))">
-                    <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
-                </svg>
-            </button>
-        </div>
-        
-        <div class="thumbnail-container" id="thumbnail-container">
-            <!-- Miniaturas serão inseridas aqui via JavaScript -->
-        </div>
+    <!-- Tela de Início -->
+    <div class="start-screen" id="startScreen">
+        <h2>Uma Surpresa Especial Para Você</h2>
+        <button class="start-btn" id="startBtn">Clique</button>
     </div>
     
-    <!-- Modal para foto ampliada -->
-    <div class="modal" id="modal">
-        <span class="close-modal">&times;</span>
-        <img class="modal-content" id="modal-image">
+    <!-- Conteúdo Principal -->
+    <div class="main-content" id="mainContent">
+        <header>
+            <h1>18 Razões Porque Eu Te Amo</h1>
+            <p class="subtitle">Descubra em cada foto um motivo especial</p>
+        </header>
+        
+        <div class="main-container">
+            <div class="gallery-container" id="gallery-container">
+                <!-- Fotos e elogios serão inseridos aqui via JavaScript -->
+            </div>
+            
+            <div class="progress-container">
+                <div class="progress-bar" id="progress-bar"></div>
+            </div>
+            
+            <div class="counter">
+                <span id="current-photo">1</span> de <span id="total-photos">18</span>
+            </div>
+            
+            <div class="navigation">
+                <button class="nav-btn" id="prev-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16" style="filter: drop-shadow(0 1px 1px rgba(0,0,0,0.2))">
+                        <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+                    </svg>
+                    <span style="margin-left: 8px;">Anterior</span>
+                </button>
+                <button class="nav-btn" id="next-btn">
+                    <span style="margin-right: 8px;">Próxima</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16" style="filter: drop-shadow(0 1px 1px rgba(0,0,0,0.2))">
+                        <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
+                    </svg>
+                </button>
+            </div>
+            
+            <div class="thumbnail-container" id="thumbnail-container">
+                <!-- Miniaturas serão inseridas aqui via JavaScript -->
+            </div>
+        </div>
+        
+        <!-- Modal para foto ampliada -->
+        <div class="modal" id="modal">
+            <span class="close-modal">&times;</span>
+            <img class="modal-content" id="modal-image">
+        </div>
+
+        <!-- Controle de música -->
+        <div class="music-control" id="musicControl">
+            <i class="fas fa-music"></i>
+        </div>
     </div>
+
+    <!-- Áudio -->
+    <audio id="backgroundMusic" loop>
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+        <!-- Substitua o link acima pelo link real da música "Aliança - Tribalistas" -->
+    </audio>
     
     <script>
+        // Elementos da tela de início
+        const startScreen = document.getElementById('startScreen');
+        const startBtn = document.getElementById('startBtn');
+        const mainContent = document.getElementById('mainContent');
+        
         // Lista de 18 fotos (substitua pelos caminhos das suas imagens)
         const photos = [
             'foto.jpg',
@@ -375,6 +485,41 @@
         const modal = document.getElementById('modal');
         const modalImg = document.getElementById('modal-image');
         const closeModal = document.querySelector('.close-modal');
+        const musicControl = document.getElementById('musicControl');
+        const backgroundMusic = document.getElementById('backgroundMusic');
+        let isMusicPlaying = false;
+
+        // Evento para iniciar a galeria
+        startBtn.addEventListener('click', () => {
+            // Esconde a tela de início com efeito de fade
+            startScreen.classList.add('hidden');
+            
+            // Mostra o conteúdo principal após a animação
+            setTimeout(() => {
+                startScreen.style.display = 'none';
+                mainContent.style.display = 'block';
+                // Inicia a música automaticamente (com volume baixo)
+                backgroundMusic.volume = 0.3;
+                backgroundMusic.play();
+                isMusicPlaying = true;
+                musicControl.innerHTML = '<i class="fas fa-pause"></i>';
+            }, 500);
+            
+            // Inicializa a galeria
+            initGallery();
+        });
+
+        // Controle de música
+        musicControl.addEventListener('click', () => {
+            if (isMusicPlaying) {
+                backgroundMusic.pause();
+                musicControl.innerHTML = '<i class="fas fa-music"></i>';
+            } else {
+                backgroundMusic.play();
+                musicControl.innerHTML = '<i class="fas fa-pause"></i>';
+            }
+            isMusicPlaying = !isMusicPlaying;
+        });
         
         // Inicializa a galeria
         function initGallery() {
@@ -388,6 +533,11 @@
                 img.src = photo;
                 img.alt = `Foto ${index + 1}`;
                 img.className = 'photo';
+                
+                // Carrega a imagem para detectar suas dimensões
+                img.onload = function() {
+                    adjustImageDisplay(img, photoContainer);
+                };
                 
                 const compliment = document.createElement('div');
                 compliment.className = 'compliment';
@@ -422,7 +572,24 @@
             });
             
             totalPhotosSpan.textContent = photos.length;
+            updateControls();
             updateProgressBar();
+        }
+        
+        // Ajusta a exibição da imagem conforme sua proporção
+        function adjustImageDisplay(img, container) {
+            const containerRatio = galleryContainer.offsetWidth / galleryContainer.offsetHeight;
+            const imgRatio = img.naturalWidth / img.naturalHeight;
+            
+            if (imgRatio > containerRatio) {
+                // Imagem mais larga que o container (paisagem)
+                img.style.width = '100%';
+                img.style.height = 'auto';
+            } else {
+                // Imagem mais alta que o container (retrato)
+                img.style.width = 'auto';
+                img.style.height = '100%';
+            }
         }
         
         // Atualiza os controles
@@ -554,10 +721,17 @@
                 closeModalFunc();
             }
         });
-        
-        // Inicializa a galeria
-        initGallery();
-        updateControls();
+
+        // Redimensiona imagens quando a janela é redimensionada
+        window.addEventListener('resize', () => {
+            const photoContainers = document.querySelectorAll('.photo-container');
+            photoContainers.forEach(container => {
+                const img = container.querySelector('img');
+                if (img) {
+                    adjustImageDisplay(img, container);
+                }
+            });
+        });
     </script>
 </body>
-</html>   
+</html>
