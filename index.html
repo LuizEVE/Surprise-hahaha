@@ -173,6 +173,7 @@
             max-height: 100%;
             object-fit: contain;
             border-radius: 8px;
+            cursor: pointer;
         }
         
         .compliment {
@@ -335,127 +336,6 @@
             color: var(--secondary-color);
         }
 
-        /* Controle de música */
-        .music-control {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: var(--gradient);
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-            z-index: 100;
-            border: 2px solid white;
-        }
-
-        .music-control i {
-            color: white;
-            font-size: 20px;
-        }
-
-        /* Player de música expandido */
-        .music-player-container {
-            position: fixed;
-            bottom: 80px;
-            right: 20px;
-            width: calc(100% - 40px);
-            max-width: 300px;
-            background-color: #1e88e5;
-            border-radius: 10px;
-            padding: 15px;
-            font-family: Arial, sans-serif;
-            color: white;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            z-index: 100;
-            display: none;
-            transform: translateY(20px);
-            opacity: 0;
-            transition: all 0.3s ease;
-        }
-
-        .music-player-container.show {
-            display: block;
-            transform: translateY(0);
-            opacity: 1;
-        }
-        
-        .song-info {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
-            gap: 10px;
-        }
-        
-        .song-title {
-            font-size: 14px;
-            font-weight: bold;
-            flex-grow: 1;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-        
-        .play-button {
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            background-color: white;
-            border: none;
-            color: #1e88e5;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            flex-shrink: 0;
-        }
-        
-        .album-art {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background-color: #0d47a1;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            overflow: hidden;
-            flex-shrink: 0;
-        }
-        
-        .album-art img {
-            width: 100%;
-            height: auto;
-        }
-        
-        .progress-container-music {
-            width: 100%;
-            height: 4px;
-            background-color: rgba(255, 255, 255, 0.3);
-            border-radius: 2px;
-            margin-top: 10px;
-            overflow: hidden;
-        }
-        
-        .progress-bar-music {
-            height: 100%;
-            width: 30%;
-            background-color: white;
-            border-radius: 2px;
-            transition: width 0.1s linear;
-        }
-        
-        .time-info {
-            display: flex;
-            justify-content: space-between;
-            font-size: 10px;
-            margin-top: 5px;
-        }
-
         /* Responsividade */
         @media (max-width: 768px) {
             h1 {
@@ -485,10 +365,6 @@
             .thumbnail {
                 width: 50px;
                 height: 50px;
-            }
-            
-            .music-player-container {
-                max-width: calc(100% - 40px);
             }
         }
 
@@ -520,19 +396,6 @@
             .thumbnail {
                 width: 40px;
                 height: 40px;
-            }
-            
-            .music-control {
-                width: 45px;
-                height: 45px;
-                bottom: 15px;
-                right: 15px;
-            }
-            
-            .music-player-container {
-                bottom: 70px;
-                right: 15px;
-                width: calc(100% - 30px);
             }
         }
     </style>
@@ -591,38 +454,7 @@
             <span class="close-modal">&times;</span>
             <img class="modal-content" id="modal-image">
         </div>
-
-        <!-- Controle de música -->
-        <div class="music-control" id="musicControl">
-            <i class="fas fa-music"></i>
-        </div>
-
-        <!-- Player de música expandido -->
-        <div class="music-player-container" id="musicPlayerContainer">
-            <div class="song-info">
-                <span class="song-title">Aliança - Tribalistas</span>
-                <button class="play-button" id="musicPlayerPlayBtn">▶</button>
-                <div class="album-art">
-                    <img src="https://i.scdn.co/image/ab67616d00001e02a2a6b6e1b2c9a7d3a9e0e0d0" alt="Capa do Álbum">
-                </div>
-            </div>
-            
-            <div class="progress-container-music">
-                <div class="progress-bar-music" id="musicProgressBar"></div>
-            </div>
-            
-            <div class="time-info">
-                <span id="currentTime">0:00</span>
-                <span id="totalTime">0:00</span>
-            </div>
-        </div>
     </div>
-
-    <!-- Áudio -->
-    <audio id="backgroundMusic" loop>
-        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
-        <!-- Substitua o link acima pelo link real da música "Aliança - Tribalistas" -->
-    </audio>
     
     <script>
         // Elementos da tela de início
@@ -687,16 +519,6 @@
         const modal = document.getElementById('modal');
         const modalImg = document.getElementById('modal-image');
         const closeModal = document.querySelector('.close-modal');
-        const musicControl = document.getElementById('musicControl');
-        const musicPlayerContainer = document.getElementById('musicPlayerContainer');
-        const musicPlayerPlayBtn = document.getElementById('musicPlayerPlayBtn');
-        const musicProgressBar = document.getElementById('musicProgressBar');
-        const currentTimeDisplay = document.getElementById('currentTime');
-        const totalTimeDisplay = document.getElementById('totalTime');
-        const backgroundMusic = document.getElementById('backgroundMusic');
-        let isMusicPlaying = false;
-        let isPlayerExpanded = false;
-        let progressInterval;
 
         // Evento para iniciar a galeria
         startBtn.addEventListener('click', () => {
@@ -707,91 +529,10 @@
             setTimeout(() => {
                 startScreen.style.display = 'none';
                 mainContent.style.display = 'block';
-                // Inicia a música automaticamente (com volume baixo)
-                backgroundMusic.volume = 0.3;
-                backgroundMusic.play();
-                isMusicPlaying = true;
-                musicControl.innerHTML = '<i class="fas fa-pause"></i>';
-                musicPlayerPlayBtn.textContent = '❚❚';
-                startProgressTracking();
             }, 500);
             
-            // Inicializa a galeria
             initGallery();
         });
-
-        // Controle de música
-        musicControl.addEventListener('click', () => {
-            toggleMusicPlayer();
-        });
-
-        // Alternar entre mostrar/esconder o player de música
-        function toggleMusicPlayer() {
-            if (isPlayerExpanded) {
-                musicPlayerContainer.classList.remove('show');
-                isPlayerExpanded = false;
-            } else {
-                musicPlayerContainer.classList.add('show');
-                isPlayerExpanded = true;
-            }
-        }
-
-        // Botão play/pause do player de música
-        musicPlayerPlayBtn.addEventListener('click', () => {
-            togglePlayPause();
-        });
-
-        // Alternar entre play e pause
-        function togglePlayPause() {
-            if (isMusicPlaying) {
-                backgroundMusic.pause();
-                musicControl.innerHTML = '<i class="fas fa-music"></i>';
-                musicPlayerPlayBtn.textContent = '▶';
-                clearInterval(progressInterval);
-            } else {
-                backgroundMusic.play();
-                musicControl.innerHTML = '<i class="fas fa-pause"></i>';
-                musicPlayerPlayBtn.textContent = '❚❚';
-                startProgressTracking();
-            }
-            isMusicPlaying = !isMusicPlaying;
-        }
-
-        // Iniciar o acompanhamento do progresso da música
-        function startProgressTracking() {
-            // Atualizar o tempo total
-            updateTotalTime();
-            
-            // Atualizar o progresso periodicamente
-            progressInterval = setInterval(updateMusicProgress, 500);
-        }
-
-        // Atualizar o progresso da música
-        function updateMusicProgress() {
-            if (backgroundMusic.duration) {
-                const progress = (backgroundMusic.currentTime / backgroundMusic.duration) * 100;
-                musicProgressBar.style.width = `${progress}%`;
-                
-                // Atualizar o tempo atual
-                updateCurrentTime();
-            }
-        }
-
-        // Atualizar o tempo atual da música
-        function updateCurrentTime() {
-            const minutes = Math.floor(backgroundMusic.currentTime / 60);
-            const seconds = Math.floor(backgroundMusic.currentTime % 60);
-            currentTimeDisplay.textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
-        }
-
-        // Atualizar o tempo total da música
-        function updateTotalTime() {
-            if (backgroundMusic.duration) {
-                const minutes = Math.floor(backgroundMusic.duration / 60);
-                const seconds = Math.floor(backgroundMusic.duration % 60);
-                totalTimeDisplay.textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
-            }
-        }
         
         // Inicializa a galeria
         function initGallery() {
@@ -866,8 +607,6 @@
         
         // Atualiza os controles
         function updateControls() {
-            // Removemos a verificação de desabilitar o botão próximo
-            // para permitir a navegação circular
             prevBtn.disabled = false;
             nextBtn.disabled = false;
             currentPhotoSpan.textContent = currentIndex + 1;
@@ -938,7 +677,6 @@
         
         // Event listeners para os botões
         prevBtn.addEventListener('click', prevPhoto);
-        
         nextBtn.addEventListener('click', nextPhoto);
         
         // Navegação por teclado
@@ -999,29 +737,6 @@
                     adjustImageDisplay(img, container);
                 }
             });
-        });
-
-        // Quando a música termina de carregar
-        backgroundMusic.addEventListener('loadedmetadata', function() {
-            updateTotalTime();
-        });
-
-        // Quando a música termina de tocar
-        backgroundMusic.addEventListener('ended', function() {
-            musicControl.innerHTML = '<i class="fas fa-music"></i>';
-            musicPlayerPlayBtn.textContent = '▶';
-            isMusicPlaying = false;
-            clearInterval(progressInterval);
-        });
-
-        // Fechar o player de música ao clicar fora dele
-        document.addEventListener('click', (e) => {
-            if (isPlayerExpanded && 
-                !musicPlayerContainer.contains(e.target) && 
-                !musicControl.contains(e.target)) {
-                musicPlayerContainer.classList.remove('show');
-                isPlayerExpanded = false;
-            }
         });
     </script>
 </body>
