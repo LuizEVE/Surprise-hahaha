@@ -89,6 +89,7 @@
             width: 100%;
             max-width: 900px;
             margin: 0 auto;
+            padding: 0 15px;
         }
         
         header {
@@ -134,7 +135,8 @@
         .gallery-container {
             width: 100%;
             height: 60vh;
-            min-height: 400px;
+            min-height: 300px;
+            max-height: 500px;
             position: relative;
             margin-bottom: 1.5rem;
             overflow: hidden;
@@ -179,7 +181,7 @@
             left: 0;
             width: 100%;
             text-align: center;
-            font-size: 1.8rem;
+            font-size: 1.5rem;
             font-weight: 700;
             color: var(--primary-color);
             text-shadow: 1px 1px 3px rgba(255, 255, 255, 0.8);
@@ -192,15 +194,16 @@
         .navigation {
             display: flex;
             justify-content: center;
-            gap: 1.5rem;
+            gap: 1rem;
             margin-bottom: 1.2rem;
+            flex-wrap: wrap;
         }
         
         .nav-btn {
             background: var(--gradient);
             color: var(--light-text);
             border: none;
-            padding: 0.8rem 1.8rem;
+            padding: 0.8rem 1.5rem;
             font-size: 1rem;
             border-radius: 50px;
             cursor: pointer;
@@ -212,6 +215,7 @@
             font-weight: 600;
             letter-spacing: 0.5px;
             border: 2px solid rgba(255, 255, 255, 0.3);
+            min-width: 120px;
         }
         
         .nav-btn:hover {
@@ -269,8 +273,8 @@
         }
         
         .thumbnail {
-            width: 80px;
-            height: 80px;
+            width: 60px;
+            height: 60px;
             object-fit: cover;
             border-radius: 8px;
             cursor: pointer;
@@ -316,8 +320,8 @@
         
         .close-modal {
             position: absolute;
-            top: 30px;
-            right: 40px;
+            top: 20px;
+            right: 30px;
             color: white;
             font-size: 40px;
             font-weight: bold;
@@ -352,6 +356,184 @@
         .music-control i {
             color: white;
             font-size: 20px;
+        }
+
+        /* Player de música expandido */
+        .music-player-container {
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            width: calc(100% - 40px);
+            max-width: 300px;
+            background-color: #1e88e5;
+            border-radius: 10px;
+            padding: 15px;
+            font-family: Arial, sans-serif;
+            color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            z-index: 100;
+            display: none;
+            transform: translateY(20px);
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .music-player-container.show {
+            display: block;
+            transform: translateY(0);
+            opacity: 1;
+        }
+        
+        .song-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            gap: 10px;
+        }
+        
+        .song-title {
+            font-size: 14px;
+            font-weight: bold;
+            flex-grow: 1;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .play-button {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: white;
+            border: none;
+            color: #1e88e5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+        
+        .album-art {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #0d47a1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+        
+        .album-art img {
+            width: 100%;
+            height: auto;
+        }
+        
+        .progress-container-music {
+            width: 100%;
+            height: 4px;
+            background-color: rgba(255, 255, 255, 0.3);
+            border-radius: 2px;
+            margin-top: 10px;
+            overflow: hidden;
+        }
+        
+        .progress-bar-music {
+            height: 100%;
+            width: 30%;
+            background-color: white;
+            border-radius: 2px;
+            transition: width 0.1s linear;
+        }
+        
+        .time-info {
+            display: flex;
+            justify-content: space-between;
+            font-size: 10px;
+            margin-top: 5px;
+        }
+
+        /* Responsividade */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .subtitle {
+                font-size: 1rem;
+            }
+            
+            .compliment {
+                font-size: 1.2rem;
+                padding: 0.8rem;
+            }
+            
+            .gallery-container {
+                height: 50vh;
+                min-height: 250px;
+            }
+            
+            .nav-btn {
+                padding: 0.6rem 1.2rem;
+                font-size: 0.9rem;
+                min-width: 100px;
+            }
+            
+            .thumbnail {
+                width: 50px;
+                height: 50px;
+            }
+            
+            .music-player-container {
+                max-width: calc(100% - 40px);
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.5rem;
+            }
+            
+            .subtitle {
+                font-size: 0.9rem;
+            }
+            
+            .compliment {
+                font-size: 1rem;
+                padding: 0.6rem;
+            }
+            
+            .gallery-container {
+                height: 40vh;
+                min-height: 200px;
+            }
+            
+            .nav-btn {
+                padding: 0.5rem 1rem;
+                font-size: 0.8rem;
+                min-width: 90px;
+            }
+            
+            .thumbnail {
+                width: 40px;
+                height: 40px;
+            }
+            
+            .music-control {
+                width: 45px;
+                height: 45px;
+                bottom: 15px;
+                right: 15px;
+            }
+            
+            .music-player-container {
+                bottom: 70px;
+                right: 15px;
+                width: calc(100% - 30px);
+            }
         }
     </style>
     <!-- Ícones do Font Awesome -->
@@ -413,6 +595,26 @@
         <!-- Controle de música -->
         <div class="music-control" id="musicControl">
             <i class="fas fa-music"></i>
+        </div>
+
+        <!-- Player de música expandido -->
+        <div class="music-player-container" id="musicPlayerContainer">
+            <div class="song-info">
+                <span class="song-title">Aliança - Tribalistas</span>
+                <button class="play-button" id="musicPlayerPlayBtn">▶</button>
+                <div class="album-art">
+                    <img src="https://i.scdn.co/image/ab67616d00001e02a2a6b6e1b2c9a7d3a9e0e0d0" alt="Capa do Álbum">
+                </div>
+            </div>
+            
+            <div class="progress-container-music">
+                <div class="progress-bar-music" id="musicProgressBar"></div>
+            </div>
+            
+            <div class="time-info">
+                <span id="currentTime">0:00</span>
+                <span id="totalTime">0:00</span>
+            </div>
         </div>
     </div>
 
@@ -486,8 +688,15 @@
         const modalImg = document.getElementById('modal-image');
         const closeModal = document.querySelector('.close-modal');
         const musicControl = document.getElementById('musicControl');
+        const musicPlayerContainer = document.getElementById('musicPlayerContainer');
+        const musicPlayerPlayBtn = document.getElementById('musicPlayerPlayBtn');
+        const musicProgressBar = document.getElementById('musicProgressBar');
+        const currentTimeDisplay = document.getElementById('currentTime');
+        const totalTimeDisplay = document.getElementById('totalTime');
         const backgroundMusic = document.getElementById('backgroundMusic');
         let isMusicPlaying = false;
+        let isPlayerExpanded = false;
+        let progressInterval;
 
         // Evento para iniciar a galeria
         startBtn.addEventListener('click', () => {
@@ -503,6 +712,8 @@
                 backgroundMusic.play();
                 isMusicPlaying = true;
                 musicControl.innerHTML = '<i class="fas fa-pause"></i>';
+                musicPlayerPlayBtn.textContent = '❚❚';
+                startProgressTracking();
             }, 500);
             
             // Inicializa a galeria
@@ -511,15 +722,76 @@
 
         // Controle de música
         musicControl.addEventListener('click', () => {
+            toggleMusicPlayer();
+        });
+
+        // Alternar entre mostrar/esconder o player de música
+        function toggleMusicPlayer() {
+            if (isPlayerExpanded) {
+                musicPlayerContainer.classList.remove('show');
+                isPlayerExpanded = false;
+            } else {
+                musicPlayerContainer.classList.add('show');
+                isPlayerExpanded = true;
+            }
+        }
+
+        // Botão play/pause do player de música
+        musicPlayerPlayBtn.addEventListener('click', () => {
+            togglePlayPause();
+        });
+
+        // Alternar entre play e pause
+        function togglePlayPause() {
             if (isMusicPlaying) {
                 backgroundMusic.pause();
                 musicControl.innerHTML = '<i class="fas fa-music"></i>';
+                musicPlayerPlayBtn.textContent = '▶';
+                clearInterval(progressInterval);
             } else {
                 backgroundMusic.play();
                 musicControl.innerHTML = '<i class="fas fa-pause"></i>';
+                musicPlayerPlayBtn.textContent = '❚❚';
+                startProgressTracking();
             }
             isMusicPlaying = !isMusicPlaying;
-        });
+        }
+
+        // Iniciar o acompanhamento do progresso da música
+        function startProgressTracking() {
+            // Atualizar o tempo total
+            updateTotalTime();
+            
+            // Atualizar o progresso periodicamente
+            progressInterval = setInterval(updateMusicProgress, 500);
+        }
+
+        // Atualizar o progresso da música
+        function updateMusicProgress() {
+            if (backgroundMusic.duration) {
+                const progress = (backgroundMusic.currentTime / backgroundMusic.duration) * 100;
+                musicProgressBar.style.width = `${progress}%`;
+                
+                // Atualizar o tempo atual
+                updateCurrentTime();
+            }
+        }
+
+        // Atualizar o tempo atual da música
+        function updateCurrentTime() {
+            const minutes = Math.floor(backgroundMusic.currentTime / 60);
+            const seconds = Math.floor(backgroundMusic.currentTime % 60);
+            currentTimeDisplay.textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+        }
+
+        // Atualizar o tempo total da música
+        function updateTotalTime() {
+            if (backgroundMusic.duration) {
+                const minutes = Math.floor(backgroundMusic.duration / 60);
+                const seconds = Math.floor(backgroundMusic.duration % 60);
+                totalTimeDisplay.textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+            }
+        }
         
         // Inicializa a galeria
         function initGallery() {
@@ -594,8 +866,10 @@
         
         // Atualiza os controles
         function updateControls() {
-            prevBtn.disabled = currentIndex === 0;
-            nextBtn.disabled = currentIndex === photos.length - 1;
+            // Removemos a verificação de desabilitar o botão próximo
+            // para permitir a navegação circular
+            prevBtn.disabled = false;
+            nextBtn.disabled = false;
             currentPhotoSpan.textContent = currentIndex + 1;
             updateProgressBar();
         }
@@ -635,6 +909,20 @@
             updateThumbnails();
         }
         
+        // Navega para a próxima foto (com comportamento circular)
+        function nextPhoto() {
+            currentIndex = (currentIndex + 1) % photos.length;
+            showPhoto(currentIndex);
+            updateControls();
+        }
+        
+        // Navega para a foto anterior (com comportamento circular)
+        function prevPhoto() {
+            currentIndex = (currentIndex - 1 + photos.length) % photos.length;
+            showPhoto(currentIndex);
+            updateControls();
+        }
+        
         // Abre o modal com a foto ampliada
         function openModal(imgSrc) {
             modal.style.display = 'flex';
@@ -649,21 +937,9 @@
         }
         
         // Event listeners para os botões
-        prevBtn.addEventListener('click', () => {
-            if (currentIndex > 0) {
-                currentIndex--;
-                showPhoto(currentIndex);
-                updateControls();
-            }
-        });
+        prevBtn.addEventListener('click', prevPhoto);
         
-        nextBtn.addEventListener('click', () => {
-            if (currentIndex < photos.length - 1) {
-                currentIndex++;
-                showPhoto(currentIndex);
-                updateControls();
-            }
-        });
+        nextBtn.addEventListener('click', nextPhoto);
         
         // Navegação por teclado
         document.addEventListener('keydown', (e) => {
@@ -674,14 +950,10 @@
                 return;
             }
             
-            if (e.key === 'ArrowLeft' && currentIndex > 0) {
-                currentIndex--;
-                showPhoto(currentIndex);
-                updateControls();
-            } else if (e.key === 'ArrowRight' && currentIndex < photos.length - 1) {
-                currentIndex++;
-                showPhoto(currentIndex);
-                updateControls();
+            if (e.key === 'ArrowLeft') {
+                prevPhoto();
+            } else if (e.key === 'ArrowRight') {
+                nextPhoto();
             }
         });
         
@@ -701,14 +973,10 @@
         function handleSwipe() {
             const difference = touchStartX - touchEndX;
             
-            if (difference > 50 && currentIndex < photos.length - 1) {
-                currentIndex++;
-                showPhoto(currentIndex);
-                updateControls();
-            } else if (difference < -50 && currentIndex > 0) {
-                currentIndex--;
-                showPhoto(currentIndex);
-                updateControls();
+            if (difference > 50) { // Swipe para a esquerda
+                nextPhoto();
+            } else if (difference < -50) { // Swipe para a direita
+                prevPhoto();
             }
         }
         
@@ -731,6 +999,29 @@
                     adjustImageDisplay(img, container);
                 }
             });
+        });
+
+        // Quando a música termina de carregar
+        backgroundMusic.addEventListener('loadedmetadata', function() {
+            updateTotalTime();
+        });
+
+        // Quando a música termina de tocar
+        backgroundMusic.addEventListener('ended', function() {
+            musicControl.innerHTML = '<i class="fas fa-music"></i>';
+            musicPlayerPlayBtn.textContent = '▶';
+            isMusicPlaying = false;
+            clearInterval(progressInterval);
+        });
+
+        // Fechar o player de música ao clicar fora dele
+        document.addEventListener('click', (e) => {
+            if (isPlayerExpanded && 
+                !musicPlayerContainer.contains(e.target) && 
+                !musicControl.contains(e.target)) {
+                musicPlayerContainer.classList.remove('show');
+                isPlayerExpanded = false;
+            }
         });
     </script>
 </body>
